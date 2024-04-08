@@ -28,22 +28,26 @@ const Health = () => {
     });
   };
   return (
-    <div className="flex items-center gap-5">
-      {health.map((isFalse, index) => (
-        <div key={index}>
-          {isFalse ? (
-            <img src={HeartIcon} alt="" className="w-14 h-14" />
-          ) : (
-            <img src={RedHeartIcon} alt="" className="w-14 h-14" />
-          )}
-        </div>
-      ))}
-      <Button onPress={kurangHealth} color={"danger"}>
-        -
-      </Button>
-      <Button onPress={tambahHealth} color="primary">
-        +
-      </Button>
+    <div>
+      <div className="flex items-center gap-5">
+        {health.map((isFalse, index) => (
+          <div key={index}>
+            {isFalse ? (
+              <img src={HeartIcon} alt="" className="w-14 h-14" />
+            ) : (
+              <img src={RedHeartIcon} alt="" className="w-14 h-14" />
+            )}
+          </div>
+        ))}
+      </div>
+      <div className="flex gap-5 mt-5">
+        <Button size="sm" className="w-10" onPress={kurangHealth} color={"danger"}>
+          -
+        </Button>
+        <Button size="sm" onPress={tambahHealth} color="primary">
+          +
+        </Button>
+      </div>
     </div>
   );
 };

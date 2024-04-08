@@ -85,9 +85,9 @@ function User() {
   return (
     <>
       <img src={Background} alt="" className="w-screen h-screen absolute -z-20" />
-      <div className="p-10 h-screen">
+      <div className="p-10 h-screen flex justify-center items-center">
         <div className="flex gap-5">
-          <div className={`flex rounded-xl w-[300px] h-[300px] flex-wrap text-white`}>
+          <div className={`flex rounded-xl w-[500px] h-[500px] flex-wrap text-white`}>
             {clicked.map((isClicked, index) => (
               <Button
                 radius="none"
@@ -111,7 +111,7 @@ function User() {
               </Button>
             ))}
           </div>
-          <div className="flex gap-5">
+          {/* <div className="flex gap-5">
             {health.map((isFalse, index) => (
               <div key={index}>
                 {isFalse ? (
@@ -124,7 +124,7 @@ function User() {
           </div>
 
           <Button onClick={passHandler}>Pass</Button>
-          <Button onClick={tambahHealth}>tambah</Button>
+          <Button onClick={tambahHealth}>tambah</Button> */}
         </div>
       </div>
     </>
