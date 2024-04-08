@@ -4,7 +4,6 @@ import MatriksSoal from "../components/MatriksSoal";
 import Background from "../../src/assets/bg.jpg";
 import Pusher from "pusher-js";
 
-// function Operator() {
 //   const [clicked, setClicked] = useState(Array(9).fill(false));
 
 //   const [boxId, setBoxId] = useState("");
@@ -103,11 +102,10 @@ import Pusher from "pusher-js";
 // export default Operator;
 
 function Operator() {
-  const [clicked, setClicked] = useState(Array(9).fill(false));
-
   const [boxId, setBoxId] = useState("");
   const [matrixId, setMatrixId] = useState("");
   const [trigger, setTrigger] = useState(false);
+  const [isPass, setIsPass] = useState(false);
 
   useEffect(() => {
     const pusher = new Pusher("c6c692271659e31aa5f6", {
@@ -117,36 +115,28 @@ function Operator() {
     channel.bind("math-event", (data) => {
       setBoxId(data.box);
       setMatrixId(data.kolom);
+      setIsPass(data.pass);
       console.log(data);
       setTrigger((prevTrigger) => !prevTrigger);
     });
   }, []);
 
-  // const handleClick = (index) => {
-  //   if (index + 1 === Number(boxId)) {
-  //     const updatedClicked = [...clicked];
-  //     updatedClicked[index] = !updatedClicked[index];
-  //     setClicked(updatedClicked);
-  //   }
-  // };
-
   const roomColor = ["primary", "secondary", "warning", "success", "danger"];
 
   return (
     <>
-      <img src={Background} alt="" className="w-screen h-screen absolute -z-20" />
+      {/* <img src={Background} alt="" className="w-screen h-screen absolute -z-20" /> */}
       <div className="p-10 h-screen">
-        <div className="flex gap-5">
+        <div className="flex gap-5 flex-wrap">
           {roomColor.map((color, index) => (
             <div key={index}>
               <MatriksSoal
                 color={color}
                 id={index + 1}
-                // handleClick={handleClick}
-                // clicked={clicked[index]}
                 boxId={boxId}
                 matrixId={matrixId}
                 trigger={trigger}
+                isPass={isPass}
               />
             </div>
           ))}
