@@ -23,8 +23,17 @@ const MatriksSoal = ({ color, id, boxId, matrixId, trigger, isPass }) => {
     });
   };
 
+  const tambahHealth = () => {
+    setHealth((prevHealth) => {
+      const newHealth = [...prevHealth];
+      newHealth[remainingHealth] = false;
+      setRemainingHealth((prev) => prev + 1);
+      return newHealth;
+    });
+  };
+
   useEffect(() => {
-    if (boxId === id.toString() && isPass) {
+    if (boxId === id.toString() && isPass === "true") {
       setLastToTrue();
     }
   }, [isPass, trigger]);
@@ -63,7 +72,7 @@ const MatriksSoal = ({ color, id, boxId, matrixId, trigger, isPass }) => {
           {index + 1}
         </Button>
       ))}
-      <div className="flex gap-5">
+      {/* <div className="flex gap-5">
         {health.map((isFalse, index) => (
           <div key={index}>
             {isFalse ? (
@@ -73,9 +82,9 @@ const MatriksSoal = ({ color, id, boxId, matrixId, trigger, isPass }) => {
             )}
           </div>
         ))}
-      </div>
+      </div> */}
 
-      <Button onClick={setLastToTrue}></Button>
+      {/* <Button onClick={setLastToTrue}></Button> */}
     </div>
   );
 };

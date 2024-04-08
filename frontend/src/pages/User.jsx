@@ -33,6 +33,15 @@ function User() {
     });
   };
 
+  const tambahHealth = () => {
+    setHealth((prevHealth) => {
+      const newHealth = [...prevHealth];
+      newHealth[remainingHealth] = false;
+      setRemainingHealth((prev) => prev + 1);
+      return newHealth;
+    });
+  };
+
   const kirimData = async (boxId, matrixId) => {
     try {
       await axios
@@ -115,6 +124,7 @@ function User() {
           </div>
 
           <Button onClick={passHandler}>Pass</Button>
+          <Button onClick={tambahHealth}>tambah</Button>
         </div>
       </div>
     </>
