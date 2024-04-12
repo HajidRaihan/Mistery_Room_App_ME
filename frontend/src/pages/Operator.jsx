@@ -1,12 +1,21 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import MatriksSoal from "../components/MatriksSoal";
 import Background from "../../src/assets/bg.jpg";
 import Pusher from "pusher-js";
 import HeartIcon from "../../src/assets/heart-icon.svg";
 import RedHeartIcon from "../../src/assets/red-heart-icon.svg";
-import { Button } from "@nextui-org/react";
 import Health from "../components/Health";
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
+  useDisclosure,
+  Input,
+} from "@nextui-org/react";
 
 //   const [clicked, setClicked] = useState(Array(9).fill(false));
 
@@ -113,6 +122,18 @@ function Operator() {
   const [health, setHealth] = useState(Array(3).fill(false));
   const [remainingHealth, setRemainingHealth] = useState(3);
   const [round, setRound] = useState(1);
+  const [kelompok1, setKelompok1] = useState();
+  const [room1, setRoom1] = useState();
+  const [kelompok2, setKelompok2] = useState();
+  const [room2, setRoom2] = useState();
+  const [kelompok3, setKelompok3] = useState();
+  const [room3, setRoom3] = useState();
+  const [kelompok4, setKelompok4] = useState();
+  const [room4, setRoom4] = useState();
+  const [kelompok5, setKelompok5] = useState();
+  const [room5, setRoom5] = useState();
+  const [roundFormat, setRoundFormat] = useState([]);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   useEffect(() => {
     const pusher = new Pusher("c6c692271659e31aa5f6", {
@@ -144,6 +165,23 @@ function Operator() {
       setRemainingHealth((prev) => prev + 1);
       return newHealth;
     });
+  };
+
+  const roundHanlder = () => {
+    const roundData = [
+      { kelompok: kelompok1, room: room1 },
+      { kelompok: kelompok2, room: room2 },
+      { kelompok: kelompok3, room: room3 },
+      { kelompok: kelompok4, room: room4 },
+      { kelompok: kelompok5, room: room5 },
+    ];
+    setRoundFormat((prev) => [
+      ...prev,
+      {
+        round: prev.length + 1, // Mulai dari round ke-5
+        data: roundData,
+      },
+    ]);
   };
 
   const group = ["a", "b", "c", "d", "e"];
@@ -184,8 +222,24 @@ function Operator() {
           ))}
         </div>
 
-        <div className="text-white mt-10 flex flex-col flex-wrap h-[120px] gap-3 font-semibold text-2xl">
-          <p>
+        <div className="text-white mt-10  font-semibold text-2xl">
+          <div className="flex flex-col flex-wrap h-[120px] gap-3">
+            {roundFormat?.map((roundData, index) => (
+              <p key={index}>
+                Round {index + 1} :{" "}
+                {roundData.data.map((kelompokData, dataIndex) => (
+                  <React.Fragment key={dataIndex}>
+                    {kelompokData.kelompok} <span>&#8594;</span> {kelompokData.room}
+                    {dataIndex !== roundData.data.length - 1 && ", "}
+                  </React.Fragment>
+                ))}
+              </p>
+            ))}
+          </div>
+          <Button onPress={onOpen} className="btn bg-primary mt-5 text-white">
+            next round
+          </Button>
+          {/* <p>
             Round 1 : A <span>&#8594;</span> 3, B <span>&#8594;</span> 2, C <span>&#8594;</span> 1,
             D <span>&#8594;</span> 0, E <span>&#8594;</span> 4
           </p>
@@ -220,13 +274,86 @@ function Operator() {
           <p>
             Round 9 : A <span>&#8594;</span> 3, B <span>&#8594;</span> 2, C <span>&#8594;</span> 1,
             D <span>&#8594;</span> 0, E <span>&#8594;</span> 4
-          </p>
+          </p> */}
+          {/* <RoundElement round={round} name={kelompok} number={room} /> */}
           {/* <Button onClick={() => setRound((prev) => prev + 1)} className="btn bg-primary">
             next round
           </Button> */}
         </div>
       </div>
+      <>
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+          <ModalContent>
+            {(onClose) => (
+              <>
+                <ModalHeader className="flex flex-col gap-1">Modal Title</ModalHeader>
+                <ModalBody>
+                  <div className=" w-full flex flex-col  md:flex-nowrap gap-4">
+                    {/* <Input type="text" label="Round" onChange={(e) => setRound(e.target.value)} /> */}
+                    <div className="flex gap-4">
+                      <Input
+                        type="text"
+                        label="Kelompok1"
+                        onChange={(e) => setKelompok1(e.target.value)}
+                      />
+                      <Input type="text" label="Room1" onChange={(e) => setRoom1(e.target.value)} />
+                    </div>
+                    <div className="flex gap-4">
+                      <Input
+                        type="text"
+                        label="Kelompok2"
+                        onChange={(e) => setKelompok2(e.target.value)}
+                      />
+                      <Input type="text" label="Room2" onChange={(e) => setRoom2(e.target.value)} />
+                    </div>
+                    <div className="flex gap-4">
+                      <Input
+                        type="text"
+                        label="Kelompok3"
+                        onChange={(e) => setKelompok3(e.target.value)}
+                      />
+                      <Input type="text" label="Room3" onChange={(e) => setRoom3(e.target.value)} />
+                    </div>
+                    <div className="flex gap-4">
+                      <Input
+                        type="text"
+                        label="Kelompok4"
+                        onChange={(e) => setKelompok4(e.target.value)}
+                      />
+                      <Input type="text" label="Room4" onChange={(e) => setRoom4(e.target.value)} />
+                    </div>
+                    <div className="flex gap-4">
+                      <Input
+                        type="text"
+                        label="Kelompok5"
+                        onChange={(e) => setKelompok5(e.target.value)}
+                      />
+                      <Input type="text" label="Room5" onChange={(e) => setRoom5(e.target.value)} />
+                    </div>
+                  </div>
+                </ModalBody>
+                <ModalFooter>
+                  <Button color="danger" variant="light" onPress={onClose}>
+                    Close
+                  </Button>
+                  <Button color="primary" onPress={roundHanlder}>
+                    Submit
+                  </Button>
+                </ModalFooter>
+              </>
+            )}
+          </ModalContent>
+        </Modal>
+      </>
     </>
+  );
+}
+
+function RoundElement({ round, name, number }) {
+  return (
+    <p>
+      Round {round} : {name} <span>&#8594;</span> {number},
+    </p>
   );
 }
 
