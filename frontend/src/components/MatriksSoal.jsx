@@ -49,30 +49,35 @@ const MatriksSoal = ({ color, id, boxId, matrixId, trigger, isPass }) => {
     }
   }, [id, boxId, matrixId, trigger]);
   return (
-    <div className={`flex rounded-xl w-[300px] h-[300px] flex-wrap text-white`}>
-      {clicked.map((isClicked, index) => (
-        <Button
-          radius="none"
-          key={index}
-          className={`text-3xl font-bold text-white flex items-center justify-center w-1/3 h-1/3 transition-colors duration-500 ease-in-out ${
-            isClicked ? "bg-gray-600" : "bg-" + color
-          } border-1 border-white hover:opacity-80 cursor-pointer ${
-            index + 1 === 1
-              ? "rounded-tl-xl"
-              : index + 1 === 3
-              ? "rounded-tr-xl"
-              : index + 1 === 7
-              ? "rounded-bl-xl"
-              : index + 1 === 9
-              ? "rounded-br-xl"
-              : ""
-          }`}
-          onClick={() => handleClick(index)}
-        >
-          {index + 1}
-        </Button>
-      ))}
-      {/* <div className="flex gap-5">
+    <>
+      <p className="text-white text-center mb-5 font-semibold text-4xl">Room {id}</p>
+      <div className={`flex rounded-xl w-[300px] h-[300px] flex-wrap text-white`}>
+        {clicked.map((isClicked, index) => (
+          <Button
+            radius="none"
+            key={index}
+            className={`text-3xl font-bold text-black flex items-center justify-center w-1/3 h-1/3 transition-colors duration-500 ease-in-out ${
+              isClicked ? "bg-gray-600" : "bg-" + "white"
+            } border-1 border-black hover:opacity-80 cursor-pointer ${
+              index + 1 === 1
+                ? "rounded-tl-xl"
+                : index + 1 === 3
+                ? "rounded-tr-xl"
+                : index + 1 === 7
+                ? "rounded-bl-xl"
+                : index + 1 === 9
+                ? "rounded-br-xl"
+                : ""
+            }`}
+            onClick={() => handleClick(index)}
+          >
+            {index + 1}
+            <p className="text-lg text-red-500 absolute right-2 bottom-0">
+              {index + 1 <= 3 ? "50" : index + 1 > 3 && index + 1 <= 6 ? "100" : "200"}
+            </p>
+          </Button>
+        ))}
+        {/* <div className="flex gap-5">
         {health.map((isFalse, index) => (
           <div key={index}>
             {isFalse ? (
@@ -84,8 +89,9 @@ const MatriksSoal = ({ color, id, boxId, matrixId, trigger, isPass }) => {
         ))}
       </div> */}
 
-      {/* <Button onClick={setLastToTrue}></Button> */}
-    </div>
+        {/* <Button onClick={setLastToTrue}></Button> */}
+      </div>
+    </>
   );
 };
 

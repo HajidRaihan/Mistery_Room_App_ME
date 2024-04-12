@@ -112,6 +112,7 @@ function Operator() {
   const [isPass, setIsPass] = useState(false);
   const [health, setHealth] = useState(Array(3).fill(false));
   const [remainingHealth, setRemainingHealth] = useState(3);
+  const [round, setRound] = useState(1);
 
   useEffect(() => {
     const pusher = new Pusher("c6c692271659e31aa5f6", {
@@ -152,6 +153,21 @@ function Operator() {
   return (
     <>
       <img src={Background} alt="" className="w-screen h-screen absolute -z-20" />
+      <h1 className="text-4xl text-white font-semibold text-center pt-5">MYSTERY ROOM</h1>
+      <div className="flex flex-wrap gap-14 pt-10 justify-around">
+        {group.map((group, index) => (
+          <div key={index} className="mb-5">
+            <p className="mb-5 text-white font-semibold text-xl">
+              Group
+              <span className="uppercase"> {group}</span>
+            </p>
+            <div className="flex gap-5">
+              <Health />
+            </div>
+            {/* <Button onClick={setLastToTrue}>Pass</Button> */}
+          </div>
+        ))}
+      </div>
       <div className="p-10 h-screen">
         <div className="flex gap-5 flex-wrap">
           {roomColor.map((color, index) => (
@@ -167,16 +183,47 @@ function Operator() {
             </div>
           ))}
         </div>
-        <div className="flex flex-wrap gap-14 mt-10">
-          {group.map((group, index) => (
-            <div key={index} className="mb-5">
-              <p className="mb-5 text-white font-semibold text-xl">Group {group}</p>
-              <div className="flex gap-5">
-                <Health />
-              </div>
-              {/* <Button onClick={setLastToTrue}>Pass</Button> */}
-            </div>
-          ))}
+
+        <div className="text-white mt-10 flex flex-col flex-wrap h-[120px] gap-3 font-semibold text-2xl">
+          <p>
+            Round 1 : A <span>&#8594;</span> 3, B <span>&#8594;</span> 2, C <span>&#8594;</span> 1,
+            D <span>&#8594;</span> 0, E <span>&#8594;</span> 4
+          </p>
+          <p>
+            Round 2 : A <span>&#8594;</span> 3, B <span>&#8594;</span> 2, C <span>&#8594;</span> 1,
+            D <span>&#8594;</span> 0, E <span>&#8594;</span> 4
+          </p>
+          <p>
+            Round 3 : A <span>&#8594;</span> 3, B <span>&#8594;</span> 2, C <span>&#8594;</span> 1,
+            D <span>&#8594;</span> 0, E <span>&#8594;</span> 4
+          </p>
+          <p>
+            Round 4 : A <span>&#8594;</span> 3, B <span>&#8594;</span> 2, C <span>&#8594;</span> 1,
+            D <span>&#8594;</span> 0, E <span>&#8594;</span> 4
+          </p>
+          <p>
+            Round 5 : A <span>&#8594;</span> 3, B <span>&#8594;</span> 2, C <span>&#8594;</span> 1,
+            D <span>&#8594;</span> 0, E <span>&#8594;</span> 4
+          </p>{" "}
+          <p>
+            Round 6 : A <span>&#8594;</span> 3, B <span>&#8594;</span> 2, C <span>&#8594;</span> 1,
+            D <span>&#8594;</span> 0, E <span>&#8594;</span> 4
+          </p>
+          <p>
+            Round 7 : A <span>&#8594;</span> 3, B <span>&#8594;</span> 2, C <span>&#8594;</span> 1,
+            D <span>&#8594;</span> 0, E <span>&#8594;</span> 4
+          </p>{" "}
+          <p>
+            Round 8 : A <span>&#8594;</span> 3, B <span>&#8594;</span> 2, C <span>&#8594;</span> 1,
+            D <span>&#8594;</span> 0, E <span>&#8594;</span> 4
+          </p>
+          <p>
+            Round 9 : A <span>&#8594;</span> 3, B <span>&#8594;</span> 2, C <span>&#8594;</span> 1,
+            D <span>&#8594;</span> 0, E <span>&#8594;</span> 4
+          </p>
+          {/* <Button onClick={() => setRound((prev) => prev + 1)} className="btn bg-primary">
+            next round
+          </Button> */}
         </div>
       </div>
     </>

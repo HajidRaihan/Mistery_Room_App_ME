@@ -33,20 +33,28 @@ const Health = () => {
         {health.map((isFalse, index) => (
           <div key={index}>
             {isFalse ? (
-              <img src={HeartIcon} alt="" className="w-14 h-14" />
+              <img src={HeartIcon} alt="" className="w-8 h-8" />
             ) : (
-              <img src={RedHeartIcon} alt="" className="w-14 h-14" />
+              <img src={RedHeartIcon} alt="" className="w-8 h-8" />
             )}
           </div>
         ))}
       </div>
-      <div className="flex gap-5 mt-5">
+      {/* <div className="flex gap-5 mt-5">
         <Button size="sm" className="w-10" onPress={kurangHealth} color={"danger"}>
           -
         </Button>
         <Button size="sm" onPress={tambahHealth} color="primary">
           +
         </Button>
+      </div> */}
+      <div className="flex gap-5 mt-5">
+        <button onClick={kurangHealth} className="w-5 h-5 bg-gray-500">
+          -
+        </button>
+        <button onClick={tambahHealth} className="w-5 h-5 bg-gray-500">
+          +
+        </button>
       </div>
     </div>
   );
