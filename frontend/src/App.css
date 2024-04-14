@@ -1,12 +1,13 @@
 body{
-    /* background-image: url(../src/assets/bg.jpg); */
-    background-color:#192734;
+    background-image: url(../src/assets/bg.jpg);
+    overflow: auto;
+    background-color: black;
     background-size: cover;
-    display: contents;
+    /* display: contents; */
+    
 }
 
 .btnNext{
     display: flex;
     justify-content: center;
 }
-

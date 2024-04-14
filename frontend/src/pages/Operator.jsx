@@ -207,7 +207,7 @@ function Operator() {
         ))}
       </div>
       <div className="p-10 h-screen">
-        <div className="flex gap-20 flex-wrap flex justify-center">
+        <div className="flex gap-10 flex-wrap flex justify-center">
           {roomColor.map((color, index) => (
             <div key={index}>
               <MatriksSoal
