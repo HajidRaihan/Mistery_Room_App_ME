@@ -207,7 +207,7 @@ function Operator() {
         ))}
       </div>
       <div className="p-10 h-screen">
-        <div className="flex gap-5 flex-wrap">
+        <div className="flex gap-20 flex-wrap flex justify-center">
           {roomColor.map((color, index) => (
             <div key={index}>
               <MatriksSoal
@@ -236,9 +236,12 @@ function Operator() {
               </p>
             ))}
           </div>
+          <div className="btnNext">
           <Button onPress={onOpen} className="btn bg-primary mt-5 text-white">
             next round
           </Button>
+          </div>
+          
           {/* <p>
             Round 1 : A <span>&#8594;</span> 3, B <span>&#8594;</span> 2, C <span>&#8594;</span> 1,
             D <span>&#8594;</span> 0, E <span>&#8594;</span> 4

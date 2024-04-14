@@ -2,4 +2,11 @@ body{
     /* background-image: url(../src/assets/bg.jpg); */
     background-color:#192734;
     background-size: cover;
+    display: contents;
 }
+
+.btnNext{
+    display: flex;
+    justify-content: center;
+}
+
