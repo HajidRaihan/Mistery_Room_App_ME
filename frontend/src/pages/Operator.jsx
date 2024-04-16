@@ -6,6 +6,7 @@ import Pusher from "pusher-js";
 import HeartIcon from "../../src/assets/heart-icon.svg";
 import RedHeartIcon from "../../src/assets/red-heart-icon.svg";
 import Health from "../components/Health";
+import BrokenHeartIcon from "../assets/broken-heart.png";
 import {
   Modal,
   ModalContent,
@@ -15,6 +16,7 @@ import {
   Button,
   useDisclosure,
   Input,
+  Checkbox,
 } from "@nextui-org/react";
 
 //   const [clicked, setClicked] = useState(Array(9).fill(false));
@@ -133,7 +135,19 @@ function Operator() {
   const [kelompok5, setKelompok5] = useState();
   const [room5, setRoom5] = useState();
   const [roundFormat, setRoundFormat] = useState([]);
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [pass, setPass] = useState([]);
+  const [passIndex, setPassIndex] = useState();
+  const {
+    isOpen: isOpenRound,
+    onOpen: onOpenRound,
+    onOpenChange: onOpenChangeRound,
+  } = useDisclosure();
+
+  const {
+    isOpen: isOpenPass,
+    onOpen: onOpenPass,
+    onOpenChange: onOpenChangePass,
+  } = useDisclosure();
 
   useEffect(() => {
     const pusher = new Pusher("c6c692271659e31aa5f6", {
@@ -178,10 +192,64 @@ function Operator() {
     setRoundFormat((prev) => [
       ...prev,
       {
+        pass: pass,
         round: prev.length + 1, // Mulai dari round ke-5
         data: roundData,
       },
     ]);
+    localStorage.setItem("round data", JSON.stringify(roundFormat));
+  };
+
+  const passPush = async () => {
+    console.log("pushing");
+    setRoundFormat((prev) => {
+      // Menentukan indeks yang ingin diubah
+      const index = passIndex;
+
+      // Mengambil objek dengan indeks yang sesuai dari array prev
+      const roundToUpdate = prev[0];
+
+      // Menggabungkan objek yang sudah ada dengan data baru untuk properti "pass"
+      const updatedRound = {
+        ...roundToUpdate,
+        pass: pass.join(", "),
+      };
+
+      // Membuat array baru dengan objek yang diperbarui
+      const updatedRounds = [
+        ...prev.slice(0, index), // Bagian array sebelum indeks yang ingin diubah
+        updatedRound, // Objek yang diperbarui
+        ...prev.slice(index + 1), // Bagian array setelah indeks yang ingin diubah
+      ];
+
+      return updatedRounds;
+    });
+    setPass([]);
+    localStorage.setItem("round data", JSON.stringify(roundFormat));
+  };
+
+  const handlePassChange = (e) => {
+    console.log(e.target.value);
+    // Cek apakah e.target.value sudah ada dalam array checkede.target.values
+    if (pass.includes(e.target.value)) {
+      // Jika sudah ada, hapus dari array
+      console.log(true);
+      setPass(pass.filter((item) => item !== e.target.value));
+    } else {
+      // Jika belum ada, tambahkan ke array
+      setPass([...pass, e.target.value]);
+    }
+  };
+
+  const openPassModal = (index) => {
+    console.log(index);
+    onOpenPass();
+    setPassIndex(index);
+  };
+
+  const showPass = () => {
+    console.log(pass);
+    console.log({ roundFormat });
   };
 
   const group = ["a", "b", "c", "d", "e"];
@@ -192,6 +260,7 @@ function Operator() {
     <>
       <img src={Background} alt="" className="w-screen h-screen absolute -z-20" />
       <h1 className="text-4xl text-white font-semibold text-center pt-5">MYSTERY ROOM</h1>
+      <hr />
       <div className="flex flex-wrap gap-14 pt-10 justify-around">
         {group.map((group, index) => (
           <div key={index} className="mb-5">
@@ -207,7 +276,7 @@ function Operator() {
         ))}
       </div>
       <div className="p-10 h-screen">
-        <div className="flex gap-10 flex-wrap flex justify-center">
+        <div className="gap-10 flex-wrap flex justify-center">
           {roomColor.map((color, index) => (
             <div key={index}>
               <MatriksSoal
@@ -223,25 +292,46 @@ function Operator() {
         </div>
 
         <div className="text-white mt-10  font-semibold text-2xl">
-          <div className="flex flex-col flex-wrap h-[120px] gap-3">
+          <div className="flex flex-col flex-wrap h-[250px] gap-3">
             {roundFormat?.map((roundData, index) => (
-              <p key={index}>
-                Round {index + 1} :{" "}
-                {roundData.data.map((kelompokData, dataIndex) => (
-                  <React.Fragment key={dataIndex}>
-                    {kelompokData.kelompok} <span>&#8594;</span> {kelompokData.room}
-                    {dataIndex !== roundData.data.length - 1 && ", "}
-                  </React.Fragment>
-                ))}
-              </p>
+              <>
+                <div key={index} className="">
+                  <p>
+                    Round {index + 1} :{" "}
+                    {roundData.data.map((kelompokData, dataIndex) => (
+                      <React.Fragment key={dataIndex}>
+                        {kelompokData.kelompok} <span>&#8594;</span> {kelompokData.room}
+                        {dataIndex !== roundData.data.length - 1 && ", "}
+                      </React.Fragment>
+                    ))}
+                  </p>
+                  <div className="flex gap-3 items-center text-lg">
+                    <img src={BrokenHeartIcon} alt="" className="w-5 h-5" />
+                    <p>: {roundData.pass}</p>
+                    <button
+                      onClick={() => openPassModal(index)}
+                      color="primary"
+                      className="w-10 bg-slate-600 text-xs"
+                    >
+                      pass
+                    </button>
+                  </div>
+                </div>
+              </>
             ))}
           </div>
           <div className="btnNext">
-          <Button onPress={onOpen} className="btn bg-primary mt-5 text-white">
-            next round
-          </Button>
+            <Button
+              onPress={() => {
+                localStorage.setItem("round data", JSON.stringify(roundFormat));
+                onOpenRound();
+              }}
+              className="btn bg-red-500 mt-5 text-white"
+            >
+              next round
+            </Button>
           </div>
-          
+
           {/* <p>
             Round 1 : A <span>&#8594;</span> 3, B <span>&#8594;</span> 2, C <span>&#8594;</span> 1,
             D <span>&#8594;</span> 0, E <span>&#8594;</span> 4
@@ -284,73 +374,122 @@ function Operator() {
           </Button> */}
         </div>
       </div>
-      <>
-        <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-          <ModalContent>
-            {(onClose) => (
-              <>
-                <ModalHeader className="flex flex-col gap-1">Modal Title</ModalHeader>
-                <ModalBody>
-                  <div className=" w-full flex flex-col  md:flex-nowrap gap-4">
-                    {/* <Input type="text" label="Round" onChange={(e) => setRound(e.target.value)} /> */}
-                    <div className="flex gap-4">
-                      <Input
-                        type="text"
-                        label="Kelompok1"
-                        onChange={(e) => setKelompok1(e.target.value)}
-                      />
-                      <Input type="text" label="Room1" onChange={(e) => setRoom1(e.target.value)} />
-                    </div>
-                    <div className="flex gap-4">
-                      <Input
-                        type="text"
-                        label="Kelompok2"
-                        onChange={(e) => setKelompok2(e.target.value)}
-                      />
-                      <Input type="text" label="Room2" onChange={(e) => setRoom2(e.target.value)} />
-                    </div>
-                    <div className="flex gap-4">
-                      <Input
-                        type="text"
-                        label="Kelompok3"
-                        onChange={(e) => setKelompok3(e.target.value)}
-                      />
-                      <Input type="text" label="Room3" onChange={(e) => setRoom3(e.target.value)} />
-                    </div>
-                    <div className="flex gap-4">
-                      <Input
-                        type="text"
-                        label="Kelompok4"
-                        onChange={(e) => setKelompok4(e.target.value)}
-                      />
-                      <Input type="text" label="Room4" onChange={(e) => setRoom4(e.target.value)} />
-                    </div>
-                    <div className="flex gap-4">
-                      <Input
-                        type="text"
-                        label="Kelompok5"
-                        onChange={(e) => setKelompok5(e.target.value)}
-                      />
-                      <Input type="text" label="Room5" onChange={(e) => setRoom5(e.target.value)} />
-                    </div>
+
+      <Modal isOpen={isOpenPass} onOpenChange={onOpenChangePass}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">Modal Title</ModalHeader>
+              <ModalBody>
+                <div className=" w-full flex gap-10">
+                  {/* <Input type="text" label="Round" onChange={(e) => setRound(e.target.value)} /> */}
+                  {group.map((data) => (
+                    <CheckBoxPass handler={handlePassChange} value={data} />
+                  ))}
+                </div>
+              </ModalBody>
+              <ModalFooter>
+                <Button
+                  color="danger"
+                  variant="light"
+                  onPress={() => {
+                    onClose();
+                    localStorage.setItem("round data", JSON.stringify(roundFormat));
+                  }}
+                >
+                  Close
+                </Button>
+                <Button color="primary" onPress={passPush}>
+                  Submit
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
+
+      <Modal isOpen={isOpenRound} onOpenChange={onOpenChangeRound}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">Modal Title</ModalHeader>
+              <ModalBody>
+                <div className=" w-full flex flex-col  md:flex-nowrap gap-4">
+                  {/* <Input type="text" label="Round" onChange={(e) => setRound(e.target.value)} /> */}
+                  <div className="flex gap-4">
+                    <Input
+                      type="text"
+                      label="Kelompok1"
+                      onChange={(e) => setKelompok1(e.target.value)}
+                    />
+                    <Input type="text" label="Room1" onChange={(e) => setRoom1(e.target.value)} />
                   </div>
-                </ModalBody>
-                <ModalFooter>
-                  <Button color="danger" variant="light" onPress={onClose}>
-                    Close
-                  </Button>
-                  <Button color="primary" onPress={roundHanlder}>
-                    Submit
-                  </Button>
-                </ModalFooter>
-              </>
-            )}
-          </ModalContent>
-        </Modal>
-      </>
+                  <div className="flex gap-4">
+                    <Input
+                      type="text"
+                      label="Kelompok2"
+                      onChange={(e) => setKelompok2(e.target.value)}
+                    />
+                    <Input type="text" label="Room2" onChange={(e) => setRoom2(e.target.value)} />
+                  </div>
+                  <div className="flex gap-4">
+                    <Input
+                      type="text"
+                      label="Kelompok3"
+                      onChange={(e) => setKelompok3(e.target.value)}
+                    />
+                    <Input type="text" label="Room3" onChange={(e) => setRoom3(e.target.value)} />
+                  </div>
+                  <div className="flex gap-4">
+                    <Input
+                      type="text"
+                      label="Kelompok4"
+                      onChange={(e) => setKelompok4(e.target.value)}
+                    />
+                    <Input type="text" label="Room4" onChange={(e) => setRoom4(e.target.value)} />
+                  </div>
+                  <div className="flex gap-4">
+                    <Input
+                      type="text"
+                      label="Kelompok5"
+                      onChange={(e) => setKelompok5(e.target.value)}
+                    />
+                    <Input type="text" label="Room5" onChange={(e) => setRoom5(e.target.value)} />
+                  </div>
+                </div>
+              </ModalBody>
+              <ModalFooter>
+                <Button
+                  color="danger"
+                  variant="light"
+                  onPress={() => {
+                    onClose();
+                    localStorage.setItem("round data", JSON.stringify(roundFormat));
+                  }}
+                >
+                  Close
+                </Button>
+                <Button color="primary" onPress={roundHanlder}>
+                  Submit
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </>
   );
 }
+
+const CheckBoxPass = ({ handler, value }) => {
+  return (
+    <div className="flex gap-4">
+      <Checkbox size="lg" onChange={handler} value={value}>
+        {value}
+      </Checkbox>
+    </div>
+  );
+};
 
 function RoundElement({ round, name, number }) {
   return (
