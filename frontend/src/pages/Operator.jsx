@@ -207,7 +207,7 @@ function Operator() {
       const index = passIndex;
 
       // Mengambil objek dengan indeks yang sesuai dari array prev
-      const roundToUpdate = prev[0];
+      const roundToUpdate = prev[index];
 
       // Menggabungkan objek yang sudah ada dengan data baru untuk properti "pass"
       const updatedRound = {
