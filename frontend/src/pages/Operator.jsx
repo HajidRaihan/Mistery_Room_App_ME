@@ -259,7 +259,7 @@ function Operator() {
   return (
     <>
       <img src={Background} alt="" className="w-screen h-screen absolute -z-20" />
-      <h1 className="text-4xl text-white font-semibold text-center pt-5">MYSTERY ROOM</h1>
+      <h1 className="text-4xl text-white font-semibold text-center py-5">MYSTERY ROOM</h1>
       <hr />
       <div className="flex flex-wrap gap-14 pt-10 justify-around">
         {group.map((group, index) => (
@@ -326,7 +326,7 @@ function Operator() {
                 localStorage.setItem("round data", JSON.stringify(roundFormat));
                 onOpenRound();
               }}
-              className="btn bg-red-500 mt-5 text-white"
+              className="btn bg-red-500 mt-5 text-white fixed bottom-5"
             >
               next round
             </Button>
@@ -484,7 +484,7 @@ function Operator() {
 const CheckBoxPass = ({ handler, value }) => {
   return (
     <div className="flex gap-4">
-      <Checkbox size="lg" onChange={handler} value={value}>
+      <Checkbox size="lg" onChange={handler} value={value.toUpperCase()} className={"uppercase"}>
         {value}
       </Checkbox>
     </div>
